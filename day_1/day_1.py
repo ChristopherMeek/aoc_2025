@@ -12,7 +12,7 @@ L55
 L1
 L99
 R14
-L82''' 
+L82'''
 
 parsed_test_input = moves_parser.parse(test_input)
 
