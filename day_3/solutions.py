@@ -1,6 +1,6 @@
 def solve(banks: list[str], digits: int) -> int:
     total = 0
-    for bank in banks:        
+    for bank in banks:                
         max_value = max_joltage([int(d) for d in bank], digits)
         total += max_value        
     return total
