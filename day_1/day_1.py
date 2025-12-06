@@ -20,7 +20,7 @@ print("Test Input Results:")
 print(f"Dial returned to zero {count_zero_returns(parsed_test_input)} times.")
 print(f"Dial passed through zero {count_zero_passes(parsed_test_input)} times.")
     
-parsed_input = moves_parser.parse(puzzle_input)
+parsed_input = moves_parser.parse(puzzle_input.strip())
 
 print("Puzzle Input Results:")
 print(f"Dial returned to zero {count_zero_returns(parsed_input)} times.")

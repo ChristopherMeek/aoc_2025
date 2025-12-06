@@ -5,9 +5,9 @@ from get_aoc_data import get_aoc_data
 TEST_INPUT = '''987654321111111
 811111111111119
 234234234234278
-818181911112111'''
+818181911112111'''.strip()
 
-PUZZLE_INPUT = get_aoc_data(3)
+PUZZLE_INPUT = get_aoc_data(3).strip()
 
 parsed_test_input = banks_parser.parse(TEST_INPUT)
 parsed_puzzle_input = banks_parser.parse(PUZZLE_INPUT)

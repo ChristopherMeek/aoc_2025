@@ -8,7 +8,7 @@ if __name__ == "__main__":
     puzzle_input = get_aoc_data(2)
 
     parsed_test_input = ranges_parser.parse(TEST_INPUT)
-    parsed_puzzle_input = ranges_parser.parse(puzzle_input)
+    parsed_puzzle_input = ranges_parser.parse(puzzle_input.strip())
 
     print("Part 1 - Test Input:", part_1(parsed_test_input))
     print("Part 1 - Puzzle Input:", part_1(parsed_puzzle_input))
