@@ -1,7 +1,7 @@
 from .parser import parse
 from .solutions import part_1, part_2
 from get_aoc_data import get_aoc_data
-import pulp
+import time
 
 test_input = '''
 [.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
@@ -16,4 +16,8 @@ print('Test Input Part 2:', part_2(parsed_test_input))
 puzzle_input = get_aoc_data(10)
 parsed_puzzle_input = parse(puzzle_input)
 print('Puzzle Input Part 1:', part_1(parsed_puzzle_input))
+
+start_time = time.perf_counter()
 print('Puzzle Input Part 2:', part_2(parsed_puzzle_input))
+elapsed_time = time.perf_counter() - start_time
+print(f'Elapsed time: {elapsed_time:.4f} seconds')

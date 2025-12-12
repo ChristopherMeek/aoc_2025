@@ -1,6 +1,7 @@
 import pulp
 from .parser import MachineState
 from itertools import combinations
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def part_1(machines: list[MachineState]) -> int:
     sum = 0
@@ -28,23 +29,28 @@ def press_buttons(machine: MachineState, buttons_to_press ) -> list[bool]:
 
     return state
 
+def solve_single_machine(machine: MachineState) -> int:
+    model = pulp.LpProblem("MinimizeButtonCost", pulp.LpMinimize)
+    
+    button_vars = []
+    for i, button in enumerate(machine.buttons):
+        var = pulp.LpVariable(f'button_{i}', cat='Integer', lowBound=0)
+        button_vars.append(var)
+
+    model += pulp.lpSum(button_vars)
+
+    for light_index in range(len(machine.desired_state)):
+        model += (pulp.lpSum([button_vars[i] for i, button in enumerate(machine.buttons) if light_index in button]) == machine.joltages[light_index])
+
+    model.solve(pulp.PULP_CBC_CMD(msg=False))
+    
+    return pulp.value(model.objective)
+
 def part_2(machines: list[MachineState]) -> int:
     total_cost = 0
-    for machine in machines:
-        model = pulp.LpProblem("MinimizeButtonCost", pulp.LpMinimize)
-        
-        button_vars = []
-        for i, button in enumerate(machine.buttons):
-            var = pulp.LpVariable(f'button_{i}', cat='Integer', lowBound=0)
-            button_vars.append(var)
-
-        model += pulp.lpSum(button_vars)
-
-        for light_index in range(len(machine.desired_state)):
-            model += (pulp.lpSum([button_vars[i] for i, button in enumerate(machine.buttons) if light_index in button]) == machine.joltages[light_index])
-
-        model.solve(pulp.PULP_CBC_CMD(msg=False))
-        
-        total_cost += pulp.value(model.objective)
-
-    return total_cost
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(solve_single_machine, machine) for machine in machines]
+        for future in as_completed(futures):
+            total_cost += future.result()
+    
+    return int(total_cost)
